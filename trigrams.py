@@ -1,4 +1,7 @@
-# This programme detects the language of a given sentence using trigrams of different languages and scripts
+# This programme detects 1 of 6 languages of a given sentence using trigrams of different languages and movie scripts
+
+# Import tabulate module to print the scores in a table, this is not a standard module in Python so you need to install it first
+from tabulate import tabulate
 
 # Import regular expressions module, this is a standard module in Python so no need to install it
 import re
@@ -62,9 +65,12 @@ languagesB = {
     'English': {},
     'French': {},
     'German': {},
-    'Dutch': {}
+    'Dutch': {},
+    'Italian': {},
+    'Spanish': {}
 }
 
+# Just copy the bi-gram dictionary to the tri-gram dictionary because repeating the same code is not efficient
 languagesT = languagesB.copy()
 
 # Generate bigrams for each script in each language
@@ -104,16 +110,19 @@ if total_score == 0:
         print("There is no detected language according to bi-grams...")
 else:
     print("Scores per language (bi-grams):")
+    table = []
     for lang, score in scores_bi.items():
         percentage = (score / total_score) * 100
-        print(lang, "{:.2f}%".format(percentage), "(score:", score, ")")
+        table.append([lang, "{:.2f}%".format(percentage), score])
+    print(tabulate(table, headers=["Language", "Percentage", "Score"]))
 
 total_score = sum(scores_tri.values())
 if total_score == 0:
         print("There is no detected language according to tri-grams...")
 else:
     print("Scores per language (tri-grams):")
+    table = []
     for lang, score in scores_tri.items():
         percentage = (score / total_score) * 100
-        
-        print(lang, "{:.2f}%".format(percentage), "(score:", score, ")")
+        table.append([lang, "{:.2f}%".format(percentage), score])
+    print(tabulate(table, headers=["Language", "Percentage", "Score"]))
