@@ -67,15 +67,15 @@ languagesB = {
 
 languagesT = languagesB.copy()
 
-# Generate bigrams for each language and script
+# Generate bigrams for each script in each language
 for language, language_dict in languagesB.items():
-    for script in ['Titanic', 'GhostBusters', 'TheCureForInsomnia']:
+    for script in ['Titanic', 'GhostBusters', 'TheCureForInsomnia', 'WolfOfWallStreet']:
         script_path = f'scripts/{language}/{script}_{language}.txt'
         generate_bigrams_for_language(script_path, language_dict)
 
-# Generate trigrams for each language and script
+# Generate trigrams for each script in each language
 for language, language_dict in languagesT.items():
-    for script in ['Titanic', 'GhostBusters', 'TheCureForInsomnia']:
+    for script in ['Titanic', 'GhostBusters', 'TheCureForInsomnia', 'WolfOfWallStreet']:
         script_path = f'scripts/{language}/{script}_{language}.txt'
         generate_trigrams_for_language(script_path, language_dict)
 
@@ -103,16 +103,17 @@ total_score = sum(scores_bi.values())
 if total_score == 0:
         print("There is no detected language according to bi-grams...")
 else:
+    print("Scores per language (bi-grams):")
     for lang, score in scores_bi.items():
         percentage = (score / total_score) * 100
-        print("Scores per language (bi-grams):")
         print(lang, "{:.2f}%".format(percentage), "(score:", score, ")")
 
 total_score = sum(scores_tri.values())
 if total_score == 0:
         print("There is no detected language according to tri-grams...")
 else:
+    print("Scores per language (tri-grams):")
     for lang, score in scores_tri.items():
         percentage = (score / total_score) * 100
-        print("Scores per language (tri-grams):")
+        
         print(lang, "{:.2f}%".format(percentage), "(score:", score, ")")
