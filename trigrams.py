@@ -1,5 +1,8 @@
 # In this file the trigrams are generated on the basis of the titanic script(emotions), ghostbusters(buisness and action) and the cure for insomnia(longest script in existence).
 
+# This programme uses 1250mb of RAM-memory
+# The programme uses at most 10% of the CPU (Ryzen 5 3600 @ 4.00GHz)
+
 # This in a standard import for regular expressions(regex) built into python
 import re
 
@@ -22,6 +25,8 @@ TheCureForInsomnia_NL = {}
 # Function to generate trigrams from a given text
 def generate_trigrams(text):
     trigrams = {}
+    # Split text into words
+    # Regex to split text into words, the \b is a word boundary and \w+ is one or more word characters. (for more info: https://docs.python.org/3/library/re.html & https://www.geeksforgeeks.org/python-regex-re-search-vs-re-findall/)
     words = re.findall(r'\b\w+\b', text)
     for i in range(len(words)-2):
         pair = (words[i], words[i+1])
@@ -32,7 +37,9 @@ def generate_trigrams(text):
             trigrams[pair] = [follower]
     return trigrams
 
-# Generate trigrams for each language and each script
+
+# Generate trigrams for each language and script
+# Uses the generate_trigrams function to generate trigrams for each script and language
 with open('scripts/English/Titanic_EN.txt', 'r', encoding='utf-8', errors='replace') as f:
     Titanic_EN = generate_trigrams(f.read())
 with open('scripts/French/Titanic_FR.txt', 'r', encoding='utf-8', errors='replace') as f:
@@ -63,6 +70,8 @@ with open('scripts/Dutch/TheCureForInsomnia_NL.txt', 'r', encoding='utf-8', erro
 # Function to detect language based on trigrams and return the used language
 def detect_language(input_sentence):
     trigrams = generate_trigrams(input_sentence)
+
+    # Initialize scores for each language and script
     Titanic_EN_score = 0
     Titanic_FR_score = 0
     Titanic_DE_score = 0
@@ -76,8 +85,8 @@ def detect_language(input_sentence):
     TheCureForInsomnia_DE_score = 0
     TheCureForInsomnia_NL_score = 0
 
-    # Calculate scores for English Titanic, GhostBusters an TheCureForInsomnia
-    # English language
+    # Calculate scores for Titanic, GhostBusters an TheCureForInsomnia in each language
+    # English language detection
     for pair in trigrams:
         if pair in Titanic_EN:
             Titanic_EN_score += 1
@@ -85,8 +94,8 @@ def detect_language(input_sentence):
             GhostBusters_EN_score += 1
         if pair in TheCureForInsomnia_EN:
             TheCureForInsomnia_EN_score += 1
-    
-    # French language
+
+    # French language detection
     for pair in trigrams:
         if pair in Titanic_FR:
             Titanic_FR_score += 1
@@ -95,7 +104,7 @@ def detect_language(input_sentence):
         if pair in TheCureForInsomnia_FR:
             TheCureForInsomnia_FR_score += 1
 
-    # German language
+    # German language detection
     for pair in trigrams:
         if pair in Titanic_DE:
             Titanic_DE_score += 1
@@ -104,7 +113,7 @@ def detect_language(input_sentence):
         if pair in TheCureForInsomnia_DE:
             TheCureForInsomnia_DE_score += 1
 
-    # Dutch language
+    # Dutch language detection
     for pair in trigrams:
         if pair in Titanic_NL:
             Titanic_NL_score += 1
@@ -112,7 +121,6 @@ def detect_language(input_sentence):
             GhostBusters_NL_score += 1
         if pair in TheCureForInsomnia_NL:
             TheCureForInsomnia_NL_score += 1
-
 
     # Calculate total scores for each language
     Language_EN_total = Titanic_EN_score + GhostBusters_EN_score + TheCureForInsomnia_EN_score
@@ -136,6 +144,7 @@ def detect_language(input_sentence):
         return "het Nederlands"
     else:
         return "een onbekende taal"
+
 
 # Ask user for input sentence
 input_sentence = input("Voer een zin in: ")
