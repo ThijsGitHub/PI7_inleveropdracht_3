@@ -1,5 +1,7 @@
+# In this file the trigrams are generated on the basis of the titanic script(emotions), ghostbusters(buisness and action) and the cure for insomnia(longest script in existence).
+
+# This in a standard import for regular expressions(regex) built into python
 import re
-import random
 
 # Trigram dictionaries for different languages
 Titanic_EN = {}
@@ -11,6 +13,11 @@ GhostBusters_EN = {}
 GhostBusters_FR = {}
 GhostBusters_DE = {}
 GhostBusters_NL = {}
+
+TheCureForInsomnia_EN = {}
+TheCureForInsomnia_FR = {}
+TheCureForInsomnia_DE = {}
+TheCureForInsomnia_NL = {}
 
 # Function to generate trigrams from a given text
 def generate_trigrams(text):
@@ -25,7 +32,7 @@ def generate_trigrams(text):
             trigrams[pair] = [follower]
     return trigrams
 
-# Generate trigrams for each language
+# Generate trigrams for each language and each script
 with open('scripts/English/Titanic_EN.txt', 'r', encoding='utf-8', errors='replace') as f:
     Titanic_EN = generate_trigrams(f.read())
 with open('scripts/French/Titanic_FR.txt', 'r', encoding='utf-8', errors='replace') as f:
@@ -44,6 +51,15 @@ with open('scripts/German/GhostBusters_DE.txt', 'r', encoding='utf-8', errors='r
 with open('scripts/Dutch/GhostBusters_NL.txt', 'r', encoding='utf-8', errors='replace') as f:
     GhostBusters_NL = generate_trigrams(f.read())
 
+with open('scripts/English/TheCureForInsomnia_EN.txt', 'r', encoding='utf-8', errors='replace') as f:
+    TheCureForInsomnia_EN = generate_trigrams(f.read())
+with open('scripts/French/TheCureForInsomnia_FR.txt', 'r', encoding='utf-8', errors='replace') as f:
+    TheCureForInsomnia_FR = generate_trigrams(f.read())
+with open('scripts/German/TheCureForInsomnia_DE.txt', 'r', encoding='utf-8', errors='replace') as f:
+    TheCureForInsomnia_DE = generate_trigrams(f.read())
+with open('scripts/Dutch/TheCureForInsomnia_NL.txt', 'r', encoding='utf-8', errors='replace') as f:
+    TheCureForInsomnia_NL = generate_trigrams(f.read())
+
 # Function to detect language based on trigrams and return the used language
 def detect_language(input_sentence):
     trigrams = generate_trigrams(input_sentence)
@@ -55,44 +71,59 @@ def detect_language(input_sentence):
     GhostBusters_FR_score = 0
     GhostBusters_DE_score = 0
     GhostBusters_NL_score = 0
+    TheCureForInsomnia_EN_score = 0
+    TheCureForInsomnia_FR_score = 0
+    TheCureForInsomnia_DE_score = 0
+    TheCureForInsomnia_NL_score = 0
 
-    # Calculate scores for English Titanic and GhostBusters
-    for pair in Titanic_EN:
-        if pair in trigrams:
-            Titanic_EN_score += len(Titanic_EN[pair])
-    for pair in GhostBusters_EN:
-        if pair in trigrams:
-            Titanic_EN_score += len(GhostBusters_EN[pair])
+    # Calculate scores for English Titanic, GhostBusters an TheCureForInsomnia
+    # English language
+    for pair in trigrams:
+        if pair in Titanic_EN:
+            Titanic_EN_score += 1
+        if pair in GhostBusters_EN:
+            GhostBusters_EN_score += 1
+        if pair in TheCureForInsomnia_EN:
+            TheCureForInsomnia_EN_score += 1
+    
+    # French language
+    for pair in trigrams:
+        if pair in Titanic_FR:
+            Titanic_FR_score += 1
+        if pair in GhostBusters_FR:
+            GhostBusters_FR_score += 1
+        if pair in TheCureForInsomnia_FR:
+            TheCureForInsomnia_FR_score += 1
 
-    # Calculate scores for French Titanic and GhostBusters
-    for pair in Titanic_FR:
-        if pair in trigrams:
-            Titanic_FR_score += len(Titanic_FR[pair])
-    for pair in GhostBusters_FR:
-        if pair in trigrams:
-            Titanic_FR_score += len(GhostBusters_FR[pair])
+    # German language
+    for pair in trigrams:
+        if pair in Titanic_DE:
+            Titanic_DE_score += 1
+        if pair in GhostBusters_DE:
+            GhostBusters_DE_score += 1
+        if pair in TheCureForInsomnia_DE:
+            TheCureForInsomnia_DE_score += 1
 
-    # Calculate scores for German Titanic and GhostBusters
-    for pair in Titanic_DE:
-        if pair in trigrams:
-            Titanic_DE_score += len(Titanic_DE[pair])
-    for pair in GhostBusters_DE:
-        if pair in trigrams:
-            Titanic_DE_score += len(GhostBusters_DE[pair])
+    # Dutch language
+    for pair in trigrams:
+        if pair in Titanic_NL:
+            Titanic_NL_score += 1
+        if pair in GhostBusters_NL:
+            GhostBusters_NL_score += 1
+        if pair in TheCureForInsomnia_NL:
+            TheCureForInsomnia_NL_score += 1
 
-    # Calculate scores for Dutch Titanic and GhostBusters
-    for pair in Titanic_NL:
-        if pair in trigrams:
-            Titanic_NL_score += len(Titanic_NL[pair])
-    for pair in GhostBusters_NL:
-        if pair in trigrams:
-            Titanic_NL_score += len(GhostBusters_NL[pair])
 
     # Calculate total scores for each language
-    Language_EN_total = Titanic_EN_score + GhostBusters_EN_score
-    Language_FR_total = Titanic_FR_score + GhostBusters_FR_score
-    Language_DE_total = Titanic_DE_score + GhostBusters_DE_score
-    Language_NL_total = Titanic_NL_score + GhostBusters_NL_score
+    Language_EN_total = Titanic_EN_score + GhostBusters_EN_score + TheCureForInsomnia_EN_score
+    Language_FR_total = Titanic_FR_score + GhostBusters_FR_score + TheCureForInsomnia_FR_score
+    Language_DE_total = Titanic_DE_score + GhostBusters_DE_score + TheCureForInsomnia_DE_score
+    Language_NL_total = Titanic_NL_score + GhostBusters_NL_score + TheCureForInsomnia_NL_score
+
+    print("English score:", Language_EN_total)
+    print("French score:", Language_FR_total)
+    print("German score:", Language_DE_total)
+    print("Dutch score:", Language_NL_total)
 
     # Return language with highest score
     if Language_EN_total > Language_FR_total and Language_EN_total > Language_DE_total and Language_EN_total > Language_NL_total:
