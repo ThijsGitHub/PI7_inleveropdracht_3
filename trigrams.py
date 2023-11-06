@@ -69,7 +69,7 @@ else:
     print_scores(scores_bi, language_bi, 2)
 
 if sum(scores_tri.values()) == 0:
-    print("There are no detections according to trigrams...")
+    print("There are no detections according to trigrams...(maybe your sentence is too short)")
 else:
     print(f"The input sentence is written in {language_tri} according to the trigrams.")
     print_scores(scores_tri, language_tri, 3)
