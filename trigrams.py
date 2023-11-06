@@ -1,6 +1,5 @@
 import time
 import re
-from tabulate import tabulate # This package is used to print the scores in a table, not necessary for the language detection itself
 
 # Function to generate n-grams for a given text
 def generate_ngrams(text, n):
@@ -34,12 +33,11 @@ def print_scores(scores, language, n):
     if total_score == 0:
         print(f"There is no detected language according to {n}-grams...")
     else:
-        print(f"Scores per language ({n}-grams):")
-        table = []
-        for lang, score in scores.items():
-            percentage = (score / total_score) * 100
-            table.append([lang, "{:.1f}%".format(percentage), score])
-        print(tabulate(table, headers=["Language", "Percentage", "Score"]))
+        print(f"{'Language':<10} {'Score':<10} {'%':<10}")
+        for language, score in scores.items():
+            print(f"{language:<10} {score:<10} {(score / total_score) * 100:<10.2f}")
+        
+        
 
 # Initialize dictionaries for different languages and scripts
 languages = {
